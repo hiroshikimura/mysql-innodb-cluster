@@ -1,0 +1,68 @@
+services:
+  shell:
+    image: mysql-shell:latest
+    hostname: mysql-shell
+    container_name: mysql-shell
+    networks:
+      - mysql-cluster
+    command: /bin/bash
+  # router:
+  master1:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=p@ssword
+    hostname: mysql-master-01
+    container_name: mysql-master-01
+    ports:
+      - '13306:3306'
+    networks:
+      - mysql-cluster
+  master2:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=p@ssword
+    hostname: mysql-master-02
+    container_name: mysql-master-02
+    ports:
+      - '23306:3306'
+    networks:
+      - mysql-cluster
+  slave1:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=p@ssword
+    hostname: mysql-slave-01
+    container_name: mysql-slave-01
+    ports:
+      - '33306:3306'
+    networks:
+      - mysql-cluster
+  slave2:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=p@ssword
+    hostname: mysql-slave-02
+    container_name: mysql-slave-02
+    ports:
+      - '43306:3306'
+    networks:
+      - mysql-cluster
+  slave3:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=p@ssword
+    hostname: mysql-slave-03
+    container_name: mysql-slave-03
+    ports:
+      - '53306:3306'
+    networks:
+      - mysql-cluster
+
+networks:
+  mysql-cluster:
+    name: mysql-cluster
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/24
